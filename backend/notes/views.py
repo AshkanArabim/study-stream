@@ -15,10 +15,10 @@ from .forms import CustomUserCreationForm
 from rest_framework_simplejwt.exceptions import TokenError
 
 
-# TODO: I'm expecting the user to provide their refresh token (instead of access 
-# token) because I'm lazy. also, the access token isn't refreshed, so all saved 
-# tokens are essentially garbage after 24 hours (that's how long a refresh token 
-# lasts). this is dangerous and makes no sense for security. fix this if it has 
+# TODO: I'm expecting the user to provide their refresh token (instead of access
+# token) because I'm lazy. also, the access token isn't refreshed, so all saved
+# tokens are essentially garbage after 24 hours (that's how long a refresh token
+# lasts). this is dangerous and makes no sense for security. fix this if it has
 # to go into production.
 
 
@@ -26,13 +26,13 @@ def validate_refresh_token(refresh_token):
     try:
         # Decode the refresh token
         token = RefreshToken(refresh_token)
-        
+
         # Extract the user ID from the token
-        user_id = token['user_id']
-        
+        user_id = token["user_id"]
+
         # Retrieve the user from the database
         user = User.objects.get(id=user_id)
-        
+
         return user
     except TokenError:
         return None
@@ -43,7 +43,7 @@ def validate_refresh_token(refresh_token):
 # handle picture request
 # assumes it's guaranteed that the request is POST
 @api_view(["POST"])
-def receive_img_post(request):
+def create_img_post(request):
     # Access the JSON data
     data = request.data
     title = data.get("title")
@@ -57,7 +57,7 @@ def receive_img_post(request):
 
     # get the user based on the token
     user = validate_refresh_token(token)
-    
+
     if not user:
         return Response({"message": "Your token is trash lmoa."})
 
@@ -80,7 +80,7 @@ def receive_img_post(request):
 
 # handles text requests
 @api_view(["POST"])
-def receive_text_post(request):
+def create_text_post(request):
     # Access JSON data
     data = request.data
     title = data.get("title")
@@ -91,7 +91,7 @@ def receive_text_post(request):
 
     # get the user based on the token
     user = validate_refresh_token(token)
-    
+
     if not user:
         return Response({"message": "Your token is trash lmoa."})
 
@@ -123,14 +123,14 @@ def get_tokens_for_user(user):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def signup_view(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
+    username = request.data.get("username")
+    password = request.data.get("password")
     user = User.objects.create_user(username=username, password=password)
     tokens = get_tokens_for_user(user)
-    
+
     # TODO: we might want to handle the case of the user existing to the program
     # doesn't crash due to an error.
-    
+
     return Response(
         {"message": f"Account created for {user.username}", "tokens": tokens},
         status=status.HTTP_201_CREATED,
