@@ -1,0 +1,20 @@
+meta {
+  name: post image
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1/post/image
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "crn": 12345,
+    "title": "test image",
+    "date": "2024-10-12T19:18:46"
+  }
+  
+}
