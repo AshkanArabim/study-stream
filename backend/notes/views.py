@@ -12,6 +12,32 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from .forms import CustomUserCreationForm
+from rest_framework_simplejwt.exceptions import TokenError
+
+
+# TODO: I'm expecting the user to provide their refresh token (instead of access 
+# token) because I'm lazy. also, the access token isn't refreshed, so all saved 
+# tokens are essentially garbage after 24 hours (that's how long a refresh token 
+# lasts). this is dangerous and makes no sense for security. fix this if it has 
+# to go into production.
+
+
+def validate_refresh_token(refresh_token):
+    try:
+        # Decode the refresh token
+        token = RefreshToken(refresh_token)
+        
+        # Extract the user ID from the token
+        user_id = token['user_id']
+        
+        # Retrieve the user from the database
+        user = User.objects.get(id=user_id)
+        
+        return user
+    except TokenError:
+        return None
+    except User.DoesNotExist:
+        return None
 
 
 # handle picture request
@@ -23,17 +49,21 @@ def receive_img_post(request):
     title = data.get("title")
     crn = data.get("crn")
     date = data.get("date")
+    token = data.get("token")
 
     # get the image
     # TODO: gotta rename the image based on the username and datetime to avoid conflicts
     img = request.FILES.get("img")
 
-    # TODO: (waiting for login system to be done)
-    fakeuser = User.objects.create_user(username="user", password="weak")
+    # get the user based on the token
+    user = validate_refresh_token(token)
+    
+    if not user:
+        return Response({"message": "Your token is trash lmoa."})
 
     # insert into db
     new_image_note = ImageNote(
-        user=fakeuser,
+        user=user,
         title=title,
         class_date_and_time=timezone.make_aware(
             datetime.strptime(date, r"%Y-%m-%dT%H:%M:%S")  # e.g. 2024-10-12T19:18:46
@@ -57,13 +87,17 @@ def receive_text_post(request):
     body = data.get("body")
     crn = data.get("crn")
     date = data.get("date")
+    token = data.get("token")
 
-    # TODO: (waiting for login system to be done)
-    fakeuser = User.objects.create_user(username="user", password="weak")
+    # get the user based on the token
+    user = validate_refresh_token(token)
+    
+    if not user:
+        return Response({"message": "Your token is trash lmoa."})
 
     # insert into db
     new_text_note = TextNote(
-        user=fakeuser,
+        user=user,
         title=title,
         class_date_and_time=timezone.make_aware(
             datetime.strptime(date, r"%Y-%m-%dT%H:%M:%S")  # e.g. 2024-10-12T19:18:46
@@ -93,6 +127,10 @@ def signup_view(request):
     password = request.data.get('password')
     user = User.objects.create_user(username=username, password=password)
     tokens = get_tokens_for_user(user)
+    
+    # TODO: we might want to handle the case of the user existing to the program
+    # doesn't crash due to an error.
+    
     return Response(
         {"message": f"Account created for {user.username}", "tokens": tokens},
         status=status.HTTP_201_CREATED,
