@@ -8,7 +8,7 @@ from django.utils import timezone
 
 class Note(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    course_number = models.CharField(max_length=255)
+    crn = models.IntegerField(),
     tally = models.IntegerField(default=0)
     date_and_time = models.DateTimeField(default=timezone.now)
 

@@ -27,7 +27,7 @@ def receive_img_post(request):
   # insert into db
   new_image_note = ImageNote(
     user=fakeuser,
-    course_number=crn,
+    crn=crn,
     content_image=img
   )
   new_image_note.save()
