@@ -1,12 +1,13 @@
 .header {
     display: flex;
-    justify-content: center; /* Center the logo horizontally */
+    justify-content: flex-start; /* Align the logo to the left */
     align-items: center;
     padding: 20px;
-    background-color: #f2f2f2; /* You can adjust this background color */
+    background-color: transparent; /* Keep the background transparent */
   }
   
   .logo {
-    width: 150px; /* Adjust the size of your logo as needed */
+    width: 95px; /* Adjust logo size */
     height: auto;
+    margin-left: 10px; /* Optional: Add some margin to the left for spacing */
   }

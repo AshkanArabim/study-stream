@@ -1,7 +1,6 @@
-// LoginPage.tsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "./assets/logo.png";
+import Header from "./Header"; // Import the Header component here
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -16,6 +15,9 @@ const LoginPage: React.FC = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
+      {/* Add the Header component here */}
+      <Header />
+
       <h1>Login Page</h1>
       <form
         onSubmit={handleLogin}

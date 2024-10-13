@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "./Header"; // Import the Header component here
 
 const CreatePostPage: React.FC = () => {
   const [crn, setCrn] = useState("");
@@ -27,6 +28,7 @@ const CreatePostPage: React.FC = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <Header />
       <h1>Create a Post</h1>
       <form style={{ display: "inline-block", textAlign: "left" }}>
         {/* CRN Input */}

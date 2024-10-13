@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Header from "./Header"; // Import the Header component here
 
 const SignUpPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -25,6 +26,7 @@ const SignUpPage: React.FC = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <Header />
       <h1>Sign Up</h1>
       <form
         onSubmit={handleSignUp}
