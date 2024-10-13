@@ -27,3 +27,11 @@ class ImageNote(Note):
 
     def __str__(self):
         return f"Image note by {self.user.username} on {self.class_date_and_time} with image {self.content_image}"
+
+class Vote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    note = models.ForeignKey(Note, on_delete=models.CASCADE)
+    vote_type = models.CharField(max_length=10, choices=[('up', 'Upvote'), ('down', 'Downvote')])
+    
+    class Meta:
+        unique_together = ('user', 'note') 

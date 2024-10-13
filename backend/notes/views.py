@@ -12,7 +12,8 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from .forms import CustomUserCreationForm
-
+from .models import Note, Vote
+from django.http import JsonResponse
 # handle picture request
 # assumes it's guaranteed that the request is POST
 @api_view(['POST'])
@@ -123,3 +124,52 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
+
+''''Vote Handling Logic'''
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def vote_view(request, note_id):
+    user = request.user
+    note = Note.objects.get(id=note_id)
+    vote_type = request.data.get('vote_type')  # Expecting 'up' or 'down' from the frontend
+
+    # Check if a vote already exists, else except
+    try:
+        vote = Vote.objects.get(user=user, note=note)
+        
+        #deselction logic , # If the same vote is selected, remove it
+        if vote.vote_type == vote_type:
+            
+            if vote_type == 'up':
+                note.tally -= 1
+            elif vote_type == 'down':
+                note.tally += 1  # Assuming downvotes reduce the tally
+
+            vote.delete()
+            note.save()
+            return Response({'message': f'{vote_type.capitalize()} removed.'}, status=status.HTTP_200_OK)
+        
+        else: #switching votes / vote.vote_type != vote_type 
+            
+            #by 2 because previously added or removed from tally
+            if vote.vote_type == 'up':
+                note.tally -= 2  
+            elif vote.vote_type == 'down':
+                note.tally += 2  
+                
+            vote.vote_type = vote_type
+            vote.save()
+            note.save()
+            return Response({'message': f'Switched to {vote_type}.'}, status=status.HTTP_200_OK)
+        
+    #if vote doesnt exist auto add / decrease by 1 
+    except Vote.DoesNotExist:
+        if vote_type == 'up':
+            note.tally += 1
+        elif vote_type == 'down':
+            note.tally -= 1  # Assuming downvotes reduce the tally
+
+        vote = Vote.objects.create(user=user, note=note, vote_type=vote_type)
+        note.save()
+        return JsonResponse({'status': 'success', 'vote_type': vote_type})
+        #return Response({'message': f'{vote_type.capitalize()} added.'}, status=status.HTTP_201_CREATED)

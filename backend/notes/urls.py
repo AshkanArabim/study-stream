@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.urls import path
 from .views import receive_img_post, signup_view, login_view, logout_view, receive_text_post
-
+from .views import vote_view
 urlpatterns = [
     path('post/image', receive_img_post, name='receive_img_post'),
     path('signup/', signup_view, name='signup'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('post/text', receive_text_post, name='receive_text_post'),
+    path('notes/<int:note_id>/vote/', vote_view, name='vote_note'),
 ]
