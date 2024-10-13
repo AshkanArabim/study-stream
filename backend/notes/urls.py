@@ -22,6 +22,7 @@ from .views import (
     login_view,
     logout_view,
     create_text_post,
+    get_single_note
 )
 from .views import vote_note
 from django.conf import settings
@@ -44,5 +45,5 @@ urlpatterns = [
     path("notes/text", create_text_post, name="create_text_post"),
     path("notes/", get_notes, name="get_notes"),
     path("notes/vote/", vote_note, name="vote_note"),
-    path("notes/", get_notes, name="get_notes"),
+    path("note/", get_single_note, name="get_single_note"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

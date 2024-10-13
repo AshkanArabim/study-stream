@@ -52,6 +52,28 @@ def convert_iso_to_datetime(iso_date):
     )
 
 
+# tells whether user has upvoted, downvoted, or none
+def get_vote_status(user, note):
+    try:
+        vote_status = Vote.objects.get(user=user, note=note)
+        return model_to_dict(vote_status)["vote_type"] # up or down
+    except Vote.DoesNotExist: # user hasn't voted on this
+        return "none"
+
+
+# all the extra processing required for one note
+def process_note(user, note):
+    # add the image url if it's an imagenote
+    note_dict = model_to_dict(note)
+    if "content_image" in note_dict:
+        note_dict["content_image"] = note.content_image.url
+    
+    # add current user's vote as part of the response
+    note_dict["vote_status"] = get_vote_status(user, note)
+    
+    return note_dict
+
+
 @api_view(["GET"])
 def get_notes(request):
     # TODO: add a field showing if user has voted on this post, and how
@@ -78,24 +100,9 @@ def get_notes(request):
 
     notes = list(textnotes) + list(imagenote)
 
-    notes_with_img_url = []
-    for note in notes:
-        
-        # add the image url if it's an imagenote
-        note_dict = model_to_dict(note)
-        if "content_image" in note_dict:
-            note_dict["content_image"] = note.content_image.url
+    processed_notes = [process_note(user, note) for note in notes]
 
-        notes_with_img_url.append(note_dict)
-        
-        # add current user's vote as part of the response
-        try:
-            vote_status = Vote.objects.get(user=user, note=note)
-            note_dict["vote_status"] = model_to_dict(vote_status)["vote_type"] # up or down
-        except Vote.DoesNotExist: # user hasn't voted on this
-            note_dict["vote_status"] = "none"
-
-    return Response({"notes": notes_with_img_url})
+    return Response({"notes": processed_notes})
 
 
 # handle picture request
@@ -280,3 +287,27 @@ def vote_note(request):
         note.save()
         return JsonResponse({"status": "success", "vote_type": vote_type})
         # return Response({'message': f'{vote_type.capitalize()} added.'}, status=status.HTTP_201_CREATED)
+
+
+"""'Vote Handling Logic"""
+@api_view(["GET"])
+def get_single_note(request):    
+    # get the 'get' parameters
+    params = request.query_params
+    note_id = params.get("id")
+    token = params.get("token")
+    
+    # get user
+    user = validate_refresh_token(token)
+    if not user:
+        return unauthorized_token_message()
+    
+    try:
+        note = TextNote.objects.get(id=note_id)
+    except TextNote.DoesNotExist:
+        try:
+            note = ImageNote.objects.get(id=note_id)
+        except ImageNote.DoesNotExist:
+            return Response({"error": "note with that id doesn't exist"}, 404)
+    
+    return Response(process_note(user, note), 200)
