@@ -6,7 +6,7 @@ meta {
 
 post {
   url: http://127.0.0.1:8000/post/image
-  body: json
+  body: multipartForm
   auth: none
 }
 
@@ -18,4 +18,12 @@ body:json {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyODg2NDk0MiwiaWF0IjoxNzI4Nzc4NTQyLCJqdGkiOiI0N2E2NjQ2ZDBkNmM0MTcxYTFhODk1ZTVlOTE2ZmUzYyIsInVzZXJfaWQiOjF9.GRkqiarB_pZC0RwB2zYa4DuNFGL2lnWIHV5Kzm3_ZgQ"
   }
   
+}
+
+body:multipart-form {
+  crn: 12345
+  title: test image
+  date: 2024-10-12T19:18:46
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyODg2NDk0MiwiaWF0IjoxNzI4Nzc4NTQyLCJqdGkiOiI0N2E2NjQ2ZDBkNmM0MTcxYTFhODk1ZTVlOTE2ZmUzYyIsInVzZXJfaWQiOjF9.GRkqiarB_pZC0RwB2zYa4DuNFGL2lnWIHV5Kzm3_ZgQ
+  : @file(/home/ashkan/Pictures/Screenshots/Screenshot from 2024-10-09 12-52-27.png)
 }
