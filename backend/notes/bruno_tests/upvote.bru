@@ -1,0 +1,20 @@
+meta {
+  name: upvote
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://127.0.0.1:8000/notes/vote/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "note_id": 3,
+    "vote_type": "up",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyODg4MzU0NCwiaWF0IjoxNzI4Nzk3MTQ0LCJqdGkiOiI5N2VkMzI0YTAzN2M0YzJiODFhYmMxNjJjYjFkNmUzMiIsInVzZXJfaWQiOjV9.idDpPEEXG--Is25LE5yNJY4Y2QfmdfusmCxeISN00zo"
+  }
+  
+}
