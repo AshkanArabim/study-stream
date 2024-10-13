@@ -64,11 +64,6 @@ def get_notes(request):
 
     if not user:
         return unauthorized_token_message()
-
-    # fetch from database
-    # notes = Note.objects.filter(
-    #     crn=crn, class_date_and_time=convert_iso_to_datetime(date)
-    # ).order_by("tally").values()
     
     textnotes = TextNote.objects.filter(
         class_date_and_time=convert_iso_to_datetime(date)
@@ -79,34 +74,6 @@ def get_notes(request):
     ).order_by("tally").values()
     
     notes = list(textnotes) + list(imagenote)
-    
-    # # add class-specific fields
-    #     # Create a list to hold note data
-    # notes_extended = []
-
-    # # Serialize each note
-    # for note in notes:
-        
-    #     print(type(note)) # debug
-        
-    #     note_dict = {
-    #         "title": note.title,
-    #         "crn": note.crn,
-    #         "class_date_and_time": note.class_date_and_time,
-    #         "tally": note.tally,
-    #     }
-
-    #     # Add subclass-specific fields
-    #     if isinstance(note, TextNote):
-    #         note_dict["content_text"] = note.content_text
-    #         note_dict["note_type"] = "text"
-    #         print("is instance of textnote")
-    #     elif isinstance(note, ImageNote):
-    #         note_dict["content_image"] = note.content_image.url  # or just note.content_image if you don't need the URL
-    #         note_dict["note_type"] = "image"
-    #         print("is instance of imagenote")
-
-    #     notes_extended.append(note_dict)
     
     return Response({"notes": notes})
 
