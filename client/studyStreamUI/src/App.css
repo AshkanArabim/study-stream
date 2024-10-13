@@ -1,8 +1,6 @@
-/* General Page Layout */
 body {
   font-family: Arial, sans-serif;
-  background-color: #F2F2F2
-;
+  background-color: #F2F2F2;
   margin: 0;
   padding: 0;
   text-align: center;
@@ -36,6 +34,16 @@ input {
   font-size: 16px;
 }
 
+/* Time and Date Inputs */
+input[type="time"], input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
 /* Buttons */
 button {
   background-color: #2371ca;
@@ -45,7 +53,6 @@ button {
   font-size: 16px;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%;
 }
 
 button:hover {
@@ -62,6 +69,20 @@ button.link-button:hover {
   background-color: #0056b3;
 }
 
+/* Button alignment for CreatePostPage (spacing between two buttons) */
+/* This rule is replaced by flexbox below */
+button + button {
+  margin-left: 10px;
+}
+
+/* Flexbox for buttons in CreatePostPage */
+.button-container {
+  display: flex;
+  justify-content: center; /* Centers the buttons horizontally */
+  gap: 10px; /* Adds space between buttons */
+  margin-top: 20px; /* Adds space above the buttons */
+}
+
 /* Message for Sign Up or Login */
 p {
   font-size: 14px;
@@ -71,4 +92,22 @@ p {
 div {
   text-align: left;
   margin-bottom: 15px;
+}
+
+/* File Input Styling */
+input[type="file"] {
+  padding: 5px;
+  border: none;
+}
+
+/* Textarea Styling */
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  resize: vertical;
 }

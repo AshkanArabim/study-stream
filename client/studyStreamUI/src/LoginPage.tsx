@@ -1,6 +1,7 @@
 // LoginPage.tsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "./assets/logo.png";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
