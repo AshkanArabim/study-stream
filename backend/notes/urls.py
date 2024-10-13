@@ -23,7 +23,7 @@ from .views import (
     logout_view,
     create_text_post,
 )
-from .views import note_note
+from .views import vote_note
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -43,6 +43,6 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path("notes/text", create_text_post, name="create_text_post"),
     path("notes/", get_notes, name="get_notes"),
-    path("notes/vote/", note_note, name="vote_note"),
+    path("notes/vote/", vote_note, name="vote_note"),
     path("notes/", get_notes, name="get_notes"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

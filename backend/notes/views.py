@@ -211,16 +211,16 @@ def logout_view(request):
 
 """'Vote Handling Logic"""
 @api_view(["POST"])
-def note_note(request):
+def vote_note(request):
     note_id = request.data.get("note_id")
     token = request.data.get("token")
-    
+
     # TODO: check if all json fields provided
-    
+
     user = validate_refresh_token(token)
     if not user:
         return unauthorized_token_message()
-    
+
     note = Note.objects.get(id=note_id)
     vote_type = request.data.get(
         "vote_type"
