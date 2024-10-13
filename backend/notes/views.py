@@ -9,6 +9,7 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+from django.forms.models import model_to_dict
 from django.core import serializers
 
 
@@ -67,15 +68,23 @@ def get_notes(request):
     
     textnotes = TextNote.objects.filter(
         crn=crn, class_date_and_time=convert_iso_to_datetime(date)
-    ).order_by("tally").values()
+    ).order_by("tally")
     
     imagenote = ImageNote.objects.filter(
         crn=crn, class_date_and_time=convert_iso_to_datetime(date)
-    ).order_by("tally").values()
+    ).order_by("tally")
     
     notes = list(textnotes) + list(imagenote)
     
-    return Response({"notes": notes})
+    notes_with_img_url = []
+    for note in notes:
+        note_dict = model_to_dict(note)
+        if "content_image" in note_dict:
+            note_dict["content_image"] = note.content_image.url
+    
+        notes_with_img_url.append(note_dict)
+    
+    return Response({"notes": notes_with_img_url})
 
 
 # handle picture request

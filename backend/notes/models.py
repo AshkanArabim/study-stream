@@ -20,9 +20,6 @@ class TextNote(Note):
         return f"Text note by {self.user.username} on {self.class_date_and_time} with text '{self.content_text}'"
 
 class ImageNote(Note):
-    '''
-    PLEASE CHANGE THIS SO IT DOESNT CREATE FOLDER / EVENTURALLY PUSH WHEN CREATING 
-    '''
     content_image = models.ImageField(upload_to='notes/images/') 
 
     def __str__(self):
