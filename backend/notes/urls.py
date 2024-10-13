@@ -16,7 +16,6 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import receive_img_post, signup_view, login_view, logout_view, receive_text_post
 from .views import vote_view
 from .views import (
     create_img_post,
@@ -33,8 +32,6 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path("post/text", create_text_post, name="create_text_post"),
     path("post/", get_notes, name="get_notes"),  
-    path('post/text', receive_text_post, name='receive_text_post'),
     path('notes/<int:note_id>/vote/', vote_view, name='vote_note'),
-    
     
 ]   

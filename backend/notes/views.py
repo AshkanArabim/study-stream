@@ -8,10 +8,9 @@ from datetime import datetime
 from django.utils import timezone
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .forms import CustomUserCreationForm
+#from .forms import CustomUserCreationForm
 from django.http import JsonResponse    
 from rest_framework_simplejwt.exceptions import TokenError
-
 from .models import Note, Vote 
 
 
@@ -161,14 +160,20 @@ def get_tokens_for_user(user):
 def signup_view(request):
     username = request.data.get("username")
     password = request.data.get("password")
+
+    # Check if the username already exists BEFORE creating the user
+    if User.objects.filter(username=username).exists():
+        return Response(
+            {"error": "Username already exists"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    # Create the user if the username is available
     user = User.objects.create_user(username=username, password=password)
     tokens = get_tokens_for_user(user)
 
-    # TODO: we might want to handle the case of the user existing to the program
-    # doesn't crash due to an error.
-
     return Response(
-        {"message": f"Account created for {user.username}", "tokens": tokens},
+        {"username": user.username, "tokens": tokens},  # Ensure username is returned
         status=status.HTTP_201_CREATED,
     )
 
