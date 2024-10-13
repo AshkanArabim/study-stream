@@ -66,7 +66,7 @@ def get_notes(request):
         return unauthorized_token_message()
     
     textnotes = TextNote.objects.filter(
-        class_date_and_time=convert_iso_to_datetime(date)
+        crn=crn, class_date_and_time=convert_iso_to_datetime(date)
     ).order_by("tally").values()
     
     imagenote = ImageNote.objects.filter(
