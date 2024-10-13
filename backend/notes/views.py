@@ -80,11 +80,20 @@ def get_notes(request):
 
     notes_with_img_url = []
     for note in notes:
+        
+        # add the image url if it's an imagenote
         note_dict = model_to_dict(note)
         if "content_image" in note_dict:
             note_dict["content_image"] = note.content_image.url
 
         notes_with_img_url.append(note_dict)
+        
+        # add current user's vote as part of the response
+        try:
+            vote_status = Vote.objects.get(user=user, note=note)
+            note_dict["vote_status"] = model_to_dict(vote_status)["vote_type"] # up or down
+        except Vote.DoesNotExist: # user hasn't voted on this
+            note_dict["vote_status"] = "none"
 
     return Response({"notes": notes_with_img_url})
 
