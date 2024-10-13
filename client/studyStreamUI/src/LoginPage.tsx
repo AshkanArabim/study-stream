@@ -6,12 +6,35 @@ const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Username:", username);
-    console.log("Password:", password);
-    alert("Login functionality not implemented yet");
+
+    const loginData = { username, password };
+
+    try {
+      const response = await fetch("http://localhost:5173/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Login Successful:", data);
+        alert(`Welcome ${data.username}!`);
+      } else {
+        console.error("Login Failed:", data);
+        alert(data.error || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
+
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>

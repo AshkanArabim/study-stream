@@ -5,6 +5,7 @@ import SignUpPage from "./SignUpPage";
 import CreatePostPage from "./CreatePostPage";
 import TextPostPage from "./TextPostPage";
 import ImagePostPage from "./ImagePostPage";
+import MainPage from "./MainPage"; // Main page component
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/create-post" element={<CreatePostPage />} />
         <Route path="/text-post" element={<TextPostPage />} />
         <Route path="/image-post" element={<ImagePostPage />} />
+        <Route path="/main" element={<MainPage />} />
       </Routes>
     </Router>
   );

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import Header from "./Header"; // Import the Header component here
+import { Link, useNavigate } from "react-router-dom";
+import Header from "./Header"; // Import the Header component
 
 const SignUpPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
-  const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Validate password match
@@ -17,11 +19,35 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
-    // Handle sign-up logic here
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    alert("Sign-up functionality not implemented yet");
+    try {
+      const response = await fetch("http://localhost:8000/signup/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.error || "Signup failed");
+        return;
+      }
+
+      const data = await response.json();
+      alert(`Account created for ${data.username}`);
+      console.log("Signup successful:", data);
+
+      // Redirect to MainPage after successful signup
+      navigate("/main");
+    } catch (error) {
+      console.error("Error during signup:", error);
+      setError("An unexpected error occurred. :(");
+    }
   };
 
   return (
@@ -107,6 +133,10 @@ const SignUpPage: React.FC = () => {
         <button type="submit" style={{ padding: "10px 20px", width: "100%" }}>
           Sign Up
         </button>
+
+        {error && (
+          <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
+        )}
       </form>
 
       {/* Link to go back to Login Page */}
