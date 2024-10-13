@@ -11,8 +11,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .forms import CustomUserCreationForm
 from django.http import JsonResponse    
 from rest_framework_simplejwt.exceptions import TokenError
-
 from .models import Note, Vote 
+from django.forms.models import model_to_dict
 
 
 # TODO: I'm expecting the user to provide their refresh token (instead of access
@@ -69,16 +69,24 @@ def get_notes(request):
         return unauthorized_token_message()
     
     textnotes = TextNote.objects.filter(
-        class_date_and_time=convert_iso_to_datetime(date)
-    ).order_by("tally").values()
+        crn=crn, class_date_and_time=convert_iso_to_datetime(date)
+    ).order_by("tally")
     
     imagenote = ImageNote.objects.filter(
         crn=crn, class_date_and_time=convert_iso_to_datetime(date)
-    ).order_by("tally").values()
+    ).order_by("tally")
     
     notes = list(textnotes) + list(imagenote)
     
-    return Response({"notes": notes})
+    notes_with_img_url = []
+    for note in notes:
+        note_dict = model_to_dict(note)
+        if "content_image" in note_dict:
+            note_dict["content_image"] = note.content_image.url
+    
+        notes_with_img_url.append(note_dict)
+    
+    return Response({"notes": notes_with_img_url})
 
 
 # handle picture request
@@ -95,6 +103,9 @@ def create_img_post(request):
     # get the image
     # TODO: gotta rename the image based on the username and datetime to avoid conflicts
     img = request.FILES.get("img")
+    
+    if img == None:
+        return Response("no image uploaded!!", 400)
     
     # get the user based on the token
     user = validate_refresh_token(token)

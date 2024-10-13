@@ -18,6 +18,9 @@ Including another URLconf
 from django.urls import path
 from .views import receive_img_post, signup_view, login_view, logout_view, receive_text_post
 from .views import vote_view
+from django.conf import settings
+from django.conf.urls.static import static
+
 from .views import (
     create_img_post,
     signup_view,
@@ -35,6 +38,5 @@ urlpatterns = [
     path("post/", get_notes, name="get_notes"),  
     path('post/text', receive_text_post, name='receive_text_post'),
     path('notes/<int:note_id>/vote/', vote_view, name='vote_note'),
-    
-    
-]   
+    path("post/", get_notes, name="get_notes"),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
