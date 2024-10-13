@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate and Link
 import Header from "./Header"; // Assuming you're using the Header component for the logo
 
 const SignUpPage: React.FC = () => {
@@ -7,6 +7,7 @@ const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate(); // Create the navigate instance
 
   const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,13 +22,20 @@ const SignUpPage: React.FC = () => {
     console.log("Username:", username);
     console.log("Email:", email);
     console.log("Password:", password);
-    alert("Sign-up functionality not implemented yet");
+    alert("Sign-up successful!");
+
+    // Redirect to MainPage upon successful sign-up
+    navigate("/main"); // Navigate to the main page
   };
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      {/* Add the Header component here */}
-      <Header />
+      {/* Add the Header component here with Link to MainPage */}
+      <Link to="/main">
+        {" "}
+        {/* Wrap Header in Link to make it clickable */}
+        <Header />
+      </Link>
 
       <h1>Sign Up</h1>
       <form

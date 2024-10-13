@@ -1,0 +1,88 @@
+/* Main page container */
+.main-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  /* Header section with logo and title */
+  .main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    width: 50px; /* Adjust the logo size as needed */
+  }
+  
+  .title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+  }
+  
+  /* Search section */
+  .search-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .search-section input {
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .search-section button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2371ca;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .search-section button:hover {
+    background-color: #1e5aa7;
+  }
+  
+  /* Posts section where posts will be displayed */
+  .posts-section {
+    flex-grow: 1;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Create button section */
+  .create-button-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .create-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .create-button:hover {
+    background-color: #45a049;
+  }
+  

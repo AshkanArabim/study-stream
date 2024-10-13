@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import Header from "./Header"; // Assuming you're using the Header component for the logo
 
 const LoginPage: React.FC = () => {
@@ -15,8 +15,12 @@ const LoginPage: React.FC = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      {/* Add the Header component here */}
-      <Header />
+      {/* Wrap the logo in a Link component */}
+      <Link to="/main">
+        {" "}
+        {/* This will make the logo clickable and redirect to MainPage */}
+        <Header />
+      </Link>
 
       <h1>Login Page</h1>
       <form

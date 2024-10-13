@@ -5,16 +5,29 @@ import SignUpPage from "./SignUpPage";
 import CreatePostPage from "./CreatePostPage";
 import TextPostPage from "./TextPostPage";
 import ImagePostPage from "./ImagePostPage";
+import MainPage from "./MainPage"; // Import MainPage
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Route for LoginPage */}
         <Route path="/" element={<LoginPage />} />
+
+        {/* Route for SignUpPage */}
         <Route path="/signup" element={<SignUpPage />} />
+
+        {/* Route for CreatePostPage */}
         <Route path="/create-post" element={<CreatePostPage />} />
+
+        {/* Route for TextPostPage */}
         <Route path="/text-post" element={<TextPostPage />} />
+
+        {/* Route for ImagePostPage */}
         <Route path="/image-post" element={<ImagePostPage />} />
+
+        {/* Route for MainPage */}
+        <Route path="/main" element={<MainPage />} />
       </Routes>
     </Router>
   );

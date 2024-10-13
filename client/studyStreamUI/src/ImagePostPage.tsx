@@ -1,6 +1,6 @@
 // ImagePostPage.tsx
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom"; // Import Link from react-router-dom
 import Header from "./Header"; // Import the Header component here
 
 const ImagePostPage: React.FC = () => {
@@ -9,7 +9,11 @@ const ImagePostPage: React.FC = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <Header />
+      {/* Wrap the Header in a Link to make the logo clickable */}
+      <Link to="/main">
+        <Header />
+      </Link>
+
       <h1>Upload an Image Post</h1>
       <p>CRN: {crn}</p>
       <p>Start Time: {startTime}</p>
