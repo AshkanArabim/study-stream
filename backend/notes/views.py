@@ -93,6 +93,9 @@ def create_img_post(request):
     # TODO: gotta rename the image based on the username and datetime to avoid conflicts
     img = request.FILES.get("img")
     
+    if img == None:
+        return Response("no image uploaded!!", 400)
+    
     # get the user based on the token
     user = validate_refresh_token(token)
 
