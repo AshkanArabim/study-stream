@@ -1,18 +1,15 @@
 from django.contrib.auth import login, logout, authenticate
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .models import ImageNote
-from .models import TextNote
+from .models import ImageNote, TextNote, Note
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.utils import timezone
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .forms import CustomUserCreationForm
 from rest_framework_simplejwt.exceptions import TokenError
+from django.core import serializers
 
 
 # TODO: I'm expecting the user to provide their refresh token (instead of access
@@ -40,6 +37,80 @@ def validate_refresh_token(refresh_token):
         return None
 
 
+def unauthorized_token_message():
+    return Response(
+        {"error": "Your token is trash lmoa."}, status=status.HTTP_401_UNAUTHORIZED
+    )
+
+
+def convert_iso_to_datetime(iso_date):
+    return timezone.make_aware(
+        datetime.strptime(iso_date, r"%Y-%m-%dT%H:%M:%S")  # e.g. 2024-10-12T19:18:46
+    )
+
+
+@api_view(["GET"])
+def get_notes(request):
+    # TODO: add a field showing if user has voted on this post, and how
+    
+    # access get request params
+    params = request.query_params
+    crn = params.get("crn")
+    token = params.get("token")
+    date = params.get("date")
+
+    # authenticate user
+    user = validate_refresh_token(token)
+
+    if not user:
+        return unauthorized_token_message()
+
+    # fetch from database
+    # notes = Note.objects.filter(
+    #     crn=crn, class_date_and_time=convert_iso_to_datetime(date)
+    # ).order_by("tally").values()
+    
+    textnotes = TextNote.objects.filter(
+        class_date_and_time=convert_iso_to_datetime(date)
+    ).order_by("tally").values()
+    
+    imagenote = ImageNote.objects.filter(
+        crn=crn, class_date_and_time=convert_iso_to_datetime(date)
+    ).order_by("tally").values()
+    
+    notes = list(textnotes) + list(imagenote)
+    
+    # # add class-specific fields
+    #     # Create a list to hold note data
+    # notes_extended = []
+
+    # # Serialize each note
+    # for note in notes:
+        
+    #     print(type(note)) # debug
+        
+    #     note_dict = {
+    #         "title": note.title,
+    #         "crn": note.crn,
+    #         "class_date_and_time": note.class_date_and_time,
+    #         "tally": note.tally,
+    #     }
+
+    #     # Add subclass-specific fields
+    #     if isinstance(note, TextNote):
+    #         note_dict["content_text"] = note.content_text
+    #         note_dict["note_type"] = "text"
+    #         print("is instance of textnote")
+    #     elif isinstance(note, ImageNote):
+    #         note_dict["content_image"] = note.content_image.url  # or just note.content_image if you don't need the URL
+    #         note_dict["note_type"] = "image"
+    #         print("is instance of imagenote")
+
+    #     notes_extended.append(note_dict)
+    
+    return Response({"notes": notes})
+
+
 # handle picture request
 # assumes it's guaranteed that the request is POST
 @api_view(["POST"])
@@ -54,20 +125,18 @@ def create_img_post(request):
     # get the image
     # TODO: gotta rename the image based on the username and datetime to avoid conflicts
     img = request.FILES.get("img")
-
+    
     # get the user based on the token
     user = validate_refresh_token(token)
 
     if not user:
-        return Response({"message": "Your token is trash lmoa."})
+        return unauthorized_token_message()
 
     # insert into db
     new_image_note = ImageNote(
         user=user,
         title=title,
-        class_date_and_time=timezone.make_aware(
-            datetime.strptime(date, r"%Y-%m-%dT%H:%M:%S")  # e.g. 2024-10-12T19:18:46
-        ),
+        class_date_and_time=convert_iso_to_datetime(date),
         crn=crn,
         content_image=img,
     )
@@ -93,15 +162,13 @@ def create_text_post(request):
     user = validate_refresh_token(token)
 
     if not user:
-        return Response({"message": "Your token is trash lmoa."})
+        return unauthorized_token_message()
 
     # insert into db
     new_text_note = TextNote(
         user=user,
         title=title,
-        class_date_and_time=timezone.make_aware(
-            datetime.strptime(date, r"%Y-%m-%dT%H:%M:%S")  # e.g. 2024-10-12T19:18:46
-        ),
+        class_date_and_time=convert_iso_to_datetime(date),
         crn=crn,
         content_text=body,
     )

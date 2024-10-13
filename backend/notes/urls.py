@@ -22,6 +22,7 @@ from .views import (
     login_view,
     logout_view,
     create_text_post,
+    get_notes
 )
 
 urlpatterns = [
@@ -30,4 +31,5 @@ urlpatterns = [
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("post/text", create_text_post, name="create_text_post"),
+    path("post/", get_notes, name="get_notes"),
 ]
