@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Header from "./Header"; // Import the Header component
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate and Link
+import Header from "./Header"; // Assuming you're using the Header component for the logo
 
 const SignUpPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -18,6 +18,7 @@ const SignUpPage: React.FC = () => {
       alert("Passwords do not match");
       return;
     }
+
 
     try {
       const response = await fetch("http://localhost:8000/signup/", {
@@ -48,11 +49,27 @@ const SignUpPage: React.FC = () => {
       console.error("Error during signup:", error);
       setError("An unexpected error occurred. :(");
     }
+
+//     // Handle sign-up logic here
+//     console.log("Username:", username);
+//     console.log("Email:", email);
+//     console.log("Password:", password);
+//     alert("Sign-up successful!");
+
+//     // Redirect to MainPage upon successful sign-up
+//     navigate("/main"); // Navigate to the main page
+
   };
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <Header />
+      {/* Add the Header component here with Link to MainPage */}
+      <Link to="/main">
+        {" "}
+        {/* Wrap Header in Link to make it clickable */}
+        <Header />
+      </Link>
+
       <h1>Sign Up</h1>
       <form
         onSubmit={handleSignUp}
@@ -140,8 +157,14 @@ const SignUpPage: React.FC = () => {
       </form>
 
       {/* Link to go back to Login Page */}
-      <div style={{ marginTop: "20px" }}>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+      >
         <p>Already have an account?</p>
+      </div>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
+      >
         <Link to="/">
           <button style={{ padding: "10px 20px" }}>Back to Login</button>
         </Link>

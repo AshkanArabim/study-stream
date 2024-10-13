@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import Header from "./Header"; // Import the Header component here
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import Header from "./Header"; // Assuming you're using the Header component for the logo
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -38,8 +38,12 @@ const LoginPage: React.FC = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      {/* Add the Header component here */}
-      <Header />
+      {/* Wrap the logo in a Link component */}
+      <Link to="/main">
+        {" "}
+        {/* This will make the logo clickable and redirect to MainPage */}
+        <Header />
+      </Link>
 
       <h1>Login Page</h1>
       <form
@@ -88,8 +92,14 @@ const LoginPage: React.FC = () => {
       </form>
 
       {/* Link to SignUp page */}
-      <div style={{ marginTop: "20px" }}>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+      >
         <p>Don't have an account?</p>
+      </div>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
+      >
         <Link to="/signup">
           <button style={{ padding: "10px 20px" }}>Create an Account</button>
         </Link>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Import Link from react-router-dom
 import Header from "./Header"; // Import the Header component here
 
 const CreatePostPage: React.FC = () => {
@@ -13,7 +13,6 @@ const CreatePostPage: React.FC = () => {
       alert("Please fill in all fields");
       return;
     }
-    // Pass the data to the next page (you can also use context or localStorage)
     navigate("/text-post", { state: { crn, startTime, startDate } });
   };
 
@@ -22,13 +21,15 @@ const CreatePostPage: React.FC = () => {
       alert("Please fill in all fields");
       return;
     }
-    // Pass the data to the next page (you can also use context or localStorage)
     navigate("/image-post", { state: { crn, startTime, startDate } });
   };
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <Header />
+      {/* Wrap the Header in a Link to make the logo clickable */}
+      <Link to="/main">
+        <Header />
+      </Link>
       <h1>Create a Post</h1>
       <form style={{ display: "inline-block", textAlign: "left" }}>
         {/* CRN Input */}
