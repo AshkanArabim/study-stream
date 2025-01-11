@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "./Header"; // Import the Header component here
+import VoteButtons from './components/VoteButtons'
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -40,6 +41,8 @@ const LoginPage: React.FC = () => {
             }}
           />
         </div>
+
+        <VoteButtons />
 
         <div style={{ marginBottom: "15px" }}>
           <label htmlFor="password">Password</label>

@@ -1,0 +1,30 @@
+.upvotecontainer {
+    display: flex;
+}
+
+.upvotecontainer > div {
+    background-color: #bbb;
+    width: 20px;
+    height: 20px;
+    flex: "001";
+}
+
+.upvote {
+    border-radius: 10px 0 0 10px;
+}
+
+.downvote {
+    border-radius: 0 10px 10px 0;
+}
+
+.active {
+    color: white;
+}
+
+.upvote.active {
+    background-color: green;
+}
+
+.downvote.active {
+    background-color: red;
+}
