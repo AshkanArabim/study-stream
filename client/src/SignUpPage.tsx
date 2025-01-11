@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { backendUrl } from "./utils/vars";
 import Header from "./Header"; // Import the Header component here
 
 const SignUpPage: React.FC = () => {
@@ -7,21 +8,53 @@ const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [signUpStatus, setSignUpStatus] = useState("");
 
-  const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+  const signUpStatusToError: { [key: string]: string } = {
+    "loading": "Logging in...",
+    "password-mismatch": "Passwords do not match",
+    "email-taken": "That Email is already in use",
+    "success": "Account created. You can now log in with your credentials.",
+    "username-taken": "That username is already in use",
+    // anything not in this list is an error. 
+    // that'll be stored literally in signUpStatus
+  }
+
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Validate password match
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setSignUpStatus("password-mismatch");
       return;
     }
 
     // Handle sign-up logic here
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    alert("Sign-up functionality not implemented yet");
+    setSignUpStatus("loading");
+
+    try {
+      const response = await fetch(`${backendUrl}signup/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password, 
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSignUpStatus("success");
+      } else {
+        setSignUpStatus(data.error || "An error occurred");
+      }
+    } catch (error) {
+      setSignUpStatus("An error occurred:" + error);
+    }
   };
 
   return (
@@ -108,6 +141,17 @@ const SignUpPage: React.FC = () => {
           Sign Up
         </button>
       </form>
+
+      {/* status text */}
+      {(signUpStatus.length > 0) && (
+        <p>
+          {(signUpStatus in signUpStatusToError) ? (
+            signUpStatusToError[signUpStatus]
+          ) : (
+            signUpStatus
+          )}
+        </p>
+      )}
 
       {/* Link to go back to Login Page */}
       <div style={{ marginTop: "20px" }}>
