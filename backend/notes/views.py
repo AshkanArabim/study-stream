@@ -189,11 +189,14 @@ def get_tokens_for_user(user):
 def signup_view(request):
     username = request.data.get("username")
     password = request.data.get("password")
-    user = User.objects.create_user(username=username, password=password)
+    email = request.data.get("email")
+    
+    # check for duplicate email
+    
+    # check for duplicate username
+    
+    user = User.objects.create_user(username=username, password=password, email=email)
     tokens = get_tokens_for_user(user)
-
-    # TODO: we might want to handle the case of the user existing to the program
-    # doesn't crash due to an error.
 
     return Response(
         {"message": f"Account created for {user.username}", "tokens": tokens},
