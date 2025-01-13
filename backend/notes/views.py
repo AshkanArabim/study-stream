@@ -184,50 +184,6 @@ def get_tokens_for_user(user):
     }
 
 
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def signup_view(request):
-    username = request.data.get("username")
-    password = request.data.get("password")
-    email = request.data.get("email")
-    
-    # check for duplicate email
-    
-    # check for duplicate username
-    
-    user = User.objects.create_user(username=username, password=password, email=email)
-    tokens = get_tokens_for_user(user)
-
-    return Response(
-        {"message": f"Account created for {user.username}", "tokens": tokens},
-        status=status.HTTP_201_CREATED,
-    )
-
-
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def login_view(request):
-    username = request.data.get("username")
-    password = request.data.get("password")
-    user = authenticate(request, username=username, password=password)
-    if user:
-        login(request, user)
-        tokens = get_tokens_for_user(user)
-        return Response(
-            {"message": "Login successful", "tokens": tokens}, status=status.HTTP_200_OK
-        )
-    return Response(
-        {"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
-    )
-
-
-# useless rn
-@api_view(["POST"])
-def logout_view(request):
-    logout(request)
-    return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
-
-
 """'Vote Handling Logic"""
 @api_view(["POST"])
 def vote_note(request):
