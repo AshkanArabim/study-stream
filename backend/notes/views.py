@@ -56,8 +56,8 @@ def convert_iso_to_datetime(iso_date):
 def get_vote_status(user, note):
     try:
         vote_status = Vote.objects.get(user=user, note=note)
-        return model_to_dict(vote_status)["vote_type"] # up or down
-    except Vote.DoesNotExist: # user hasn't voted on this
+        return model_to_dict(vote_status)["vote_type"]  # up or down
+    except Vote.DoesNotExist:  # user hasn't voted on this
         return "none"
 
 
@@ -67,10 +67,10 @@ def process_note(user, note):
     note_dict = model_to_dict(note)
     if "content_image" in note_dict:
         note_dict["content_image"] = note.content_image.url
-    
+
     # add current user's vote as part of the response
     note_dict["vote_status"] = get_vote_status(user, note)
-    
+
     return note_dict
 
 
@@ -185,6 +185,8 @@ def get_tokens_for_user(user):
 
 
 """'Vote Handling Logic"""
+
+
 @api_view(["POST"])
 def vote_note(request):
     note_id = request.data.get("note_id")
@@ -249,18 +251,20 @@ def vote_note(request):
 
 
 """'Vote Handling Logic"""
+
+
 @api_view(["GET"])
-def get_single_note(request):    
+def get_single_note(request):
     # get the 'get' parameters
     params = request.query_params
     note_id = params.get("id")
     token = params.get("token")
-    
+
     # get user
     user = validate_refresh_token(token)
     if not user:
         return unauthorized_token_message()
-    
+
     try:
         note = TextNote.objects.get(id=note_id)
     except TextNote.DoesNotExist:
@@ -268,5 +272,5 @@ def get_single_note(request):
             note = ImageNote.objects.get(id=note_id)
         except ImageNote.DoesNotExist:
             return Response({"error": "note with that id doesn't exist"}, 404)
-    
+
     return Response(process_note(user, note), 200)

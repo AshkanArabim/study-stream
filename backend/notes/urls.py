@@ -22,7 +22,7 @@ from .views import (
     login_view,
     logout_view,
     create_text_post,
-    get_single_note
+    get_single_note,
 )
 from .views import vote_note
 from django.conf import settings
