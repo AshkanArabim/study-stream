@@ -1,19 +1,18 @@
 meta {
   name: login
   type: http
-  seq: 5
+  seq: 9
 }
 
 post {
-  url: http://127.0.0.1:8000/login/
+  url: http://127.0.0.1:8000/api/auth/login
   body: json
   auth: none
 }
 
 body:json {
   {
-      "username": "new_user10",
-      "password": "securepassword123"
+    "username": "new_user12",
+    "password": "bruh"
   }
-  
 }
