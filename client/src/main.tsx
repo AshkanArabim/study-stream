@@ -7,6 +7,7 @@ import { Theme } from "@chakra-ui/react";
 import Login from "./pages/Login.tsx";
 import LandingAndLogin from "./pages/LandingAndLogin.tsx";
 import Signup from "./pages/Signup.tsx";
+import NotFound from "./pages/NotFound.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
 				element: <Signup />,
 			},
 		],
+		errorElement: <NotFound />,
 	},
 ]);
 
