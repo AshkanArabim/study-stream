@@ -21,10 +21,10 @@ export default function Login() {
 							</Fieldset.Legend>
 						</Stack>
 						<Fieldset.Content>
-							<Field label="Username">
+							<Field label="Username" required>
 								<Input name="username" type="text" />
 							</Field>
-							<Field label="Password">
+							<Field label="Password" required>
 								<Input name="username" type="text" />
 							</Field>
 						</Fieldset.Content>

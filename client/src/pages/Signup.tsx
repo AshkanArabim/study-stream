@@ -21,16 +21,16 @@ export default function Signup() {
 							</Fieldset.Legend>
 						</Stack>
 						<Fieldset.Content>
-							<Field label="Username">
+							<Field label="Username" required>
 								<Input name="username" type="text" />
 							</Field>
-							<Field label="Email">
+							<Field label="Email" required>
 								<Input name="username" type="email" />
 							</Field>
-							<Field label="Password">
+							<Field label="Password" required>
 								<Input name="username" type="text" />
 							</Field>
-							<Field label="Repeat Password">
+							<Field label="Repeat Password" required>
 								<Input name="username" type="text" />
 							</Field>
 						</Fieldset.Content>
