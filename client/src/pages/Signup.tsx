@@ -41,12 +41,13 @@ export default function Signup() {
 					setFailure(false);
 				} else {
 					const serverErrorResponse: string = extractStrings(data)[0];
-					setMessage("Registration failed: " + (serverErrorResponse || data.message));
+					setMessage("Registration failed: " + (serverErrorResponse || "Unknown"));
 					setFailure(true);
 				}
 			})
 			.catch((error) => {
 				setMessage("Error:" + error.message);
+				setFailure(true);
 			});
 
 		// set state to loading while waiting
