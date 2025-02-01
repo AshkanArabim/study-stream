@@ -23,6 +23,8 @@ export default function Signup() {
 		// on callback, update state depending on status code
 		fetch(BACKEND_URL + "/api/auth/registration/", {
 			method: "POST",
+			// FIXME: remove vv in prod (cookies passed by default on same domain)
+			credentials: "include", 
 			headers: {
 				"Content-Type": "application/json",
 			},

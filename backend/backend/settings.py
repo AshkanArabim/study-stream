@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,11 +54,16 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth.registration",
     "corsheaders",
+    "django_extensions",
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-]
+# src: https://pypi.org/project/django-cors-headers/
+CORS_ALLOW_ALL_ORIGINS = True # FIXME: security vulnerability
+CORS_ALLOW_CREDENTIALS = True # FIXME: security vulnerability
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+)
+# SESSION_COOKIE_SAMESITE = 'None'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -144,6 +150,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# auth configs -----------------------------------------------------------------
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
@@ -151,9 +158,11 @@ SIMPLE_JWT = {
 
 REST_AUTH = {
     "USE_JWT": True,
-    "JWT_AUTH_COOKIE": "study_stream_auth_cookie",
-    "JWT_AUTH_REFRESH_COOKIE": "study_stream_refresh_cookie",
-    "JWT_AUTH_HTTPONLY": False,  # Makes sure refresh token is sent
+    "JWT_AUTH_COOKIE": "_auth",
+    "JWT_AUTH_REFRESH_COOKIE": "_refresh",
+    "JWT_AUTH_HTTPONLY": True,
+    "JWT_AUTH_SAMESITE": 'None', # FIXME: this is a HUGE security vulnerability
+    "JWT_AUTH_SECURE": True # enforces HTTPS. cookies will break without HTTPS
 }
 
 REST_FRAMEWORK = {
@@ -165,3 +174,10 @@ REST_FRAMEWORK = {
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
+
+# TODO: delete this old crap
+# vv pulled from https://stackoverflow.com/a/63590219/14751074
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SAMESITE = 'None'
+# JWT_AUTH_SAMESITE = None

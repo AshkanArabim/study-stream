@@ -18,6 +18,8 @@ export default function Login() {
 		// make login request
 		fetch(BACKEND_URL + "/api/auth/login", {
 			method: "POST",
+			// FIXME: remove vv in prod (cookies passed by default on same domain)
+			credentials: "include", 
 			headers: {
 				"Content-Type": "application/json",
 			},
