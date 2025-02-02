@@ -4,8 +4,6 @@ import Logo from "../assets/logo.svg?react";
 import { Link as RouteLink } from "react-router-dom";
 
 const LandingAndLogin = () => {
-	// manually importing chakra's theme
-
 	return (
 		<Flex direction="column" height="100vh" alignItems="stretch" width="100vw">
 			{/* header */}

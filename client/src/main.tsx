@@ -10,26 +10,41 @@ import Signup from "./pages/Signup.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "./store/store.ts";
+import LoggedOutProtector from "./route_protectors/LoggedOutProtector.tsx";
+import LoggedInTemp from "./pages/LoggedInTemp.tsx";
 
 const router = createBrowserRouter([
 	{
-		path: "/",
-		element: <LandingAndLogin />,
+		path: "",
+		element: <LoggedOutProtector />,
 		children: [
 			{
-				path: "/",
-				element: <Landing />,
-			},
-			{
-				path: "/login",
-				element: <Login />,
-			},
-			{
-				path: "/signup",
-				element: <Signup />,
+				path: "",
+				element: <LandingAndLogin />,
+				children: [
+					{
+						path: "",
+						element: <Landing />,
+					},
+					{
+						path: "login",
+						element: <Login />,
+					},
+					{
+						path: "signup",
+						element: <Signup />,
+					},
+				],
 			},
 		],
-		errorElement: <NotFound />,
+	},
+	{
+		path: "dashboard",
+		element: <LoggedInTemp />,
+	},
+	{
+		path: "*",
+		element: <NotFound />,
 	},
 ]);
 
