@@ -6,7 +6,6 @@ type JSONValue = string | number | boolean | JSONObject | null; // | JSONArray
 interface JSONObject {
 	[key: string]: JSONValue;
 }
-// interface JSONArray extends Array<JSONValue> {}
 
 export function extractStrings(obj: JSONObject): string[] {
 	const result: string[] = [];
@@ -34,14 +33,11 @@ export function extractStrings(obj: JSONObject): string[] {
 export async function logInWithTokenCookie() {
 	// make login api call
 
-    // debug: adding "credentials: include" flag to combat cross-origin cookie sending
 	const response = await fetch(BACKEND_URL + "/api/auth/user/", {
         method: "GET",
         credentials: 'include',
     });
 	const data = await response.json();
-
-    console.log(data); // debug
 
     if (response.ok) {
         const user = {
