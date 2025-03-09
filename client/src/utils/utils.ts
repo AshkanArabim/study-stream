@@ -1,4 +1,4 @@
-import { setUser } from "@/store/userSlice";
+import { setUser, setUserLoggedOut } from "@/store/userSlice";
 import { BACKEND_URL } from "./vars";
 import { store } from "@/store/store";
 
@@ -45,6 +45,7 @@ export async function logInWithTokenCookie() {
 
     if (response.ok) {
         const user = {
+			loggedIn: true,
             username: data["username"],
             email: data["email"],
             firstName: data["first_name"],
@@ -53,5 +54,7 @@ export async function logInWithTokenCookie() {
     
         // set user data in document store
         store.dispatch(setUser(user));
-    }
+    } else {
+		store.dispatch(setUserLoggedOut());
+	}
 }

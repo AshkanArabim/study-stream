@@ -12,6 +12,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { store } from "./store/store.ts";
 import LoggedOutProtector from "./route_protectors/LoggedOutProtector.tsx";
 import LoggedInTemp from "./pages/LoggedInTemp.tsx";
+import AuthLoader from "./pages/AuthLoader.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -53,7 +54,9 @@ createRoot(document.getElementById("root")!).render(
 		<ReduxProvider store={store}>
 			<ChakraProvider>
 				<Theme colorPalette="yellow">
-					<RouterProvider router={router} />
+					<AuthLoader>
+						<RouterProvider router={router} />
+					</AuthLoader>
 				</Theme>
 			</ChakraProvider>
 		</ReduxProvider>
