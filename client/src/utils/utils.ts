@@ -89,3 +89,24 @@ export async function logIn(username: string, password: string) {
 
 	return response;
 }
+
+export async function signUp(username: string, email: string, password: string) {
+	// make signup request
+	const response = fetch(BACKEND_URL + "/api/auth/registration/", {
+		method: "POST",
+		// FIXME: remove vv in prod (cookies passed by default on same domain)
+		credentials: "include", 
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			username: username,
+			email: email,
+			password1: password,
+			password2: password,
+		}),
+	})
+
+	// NOT logging in automatically because django forces an email verification step
+	return response
+}

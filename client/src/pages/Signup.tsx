@@ -2,8 +2,7 @@ import { Button, Card, Fieldset, Flex, Input, Stack, Text } from "@chakra-ui/rea
 import { Field } from "@/components/ui/field";
 import { Form } from "react-router-dom";
 import { useState } from "react";
-import { BACKEND_URL } from "@/utils/vars";
-import { extractStrings } from "@/utils/utils";
+import { extractStrings, signUp } from "@/utils/utils";
 
 export default function Signup() {
 	const [message, setMessage] = useState("");
@@ -21,20 +20,7 @@ export default function Signup() {
 
 		// make request
 		// on callback, update state depending on status code
-		fetch(BACKEND_URL + "/api/auth/registration/", {
-			method: "POST",
-			// FIXME: remove vv in prod (cookies passed by default on same domain)
-			credentials: "include", 
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				username: username,
-				email: email,
-				password1: password,
-				password2: password,
-			}),
-		})
+		signUp(username, email, password)
 			.then(async (response) => {
 				const data = await response.json();
 
