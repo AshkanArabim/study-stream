@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/store/hooks";
-import { logInWithTokenCookie } from "@/utils/utils";
+import { checkUserTokens } from "@/utils/utils";
 import { Center, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
@@ -10,7 +10,7 @@ export default function AuthLoader({ children }: { children: React.ReactNode }) 
 	// check once if use is logged in
 	useEffect(() => {
 		if (loggedIn === undefined) {
-			logInWithTokenCookie().finally(() => setLoading(false));
+			checkUserTokens().finally(() => setLoading(false));
 		} else {
 			setLoading(false);
 		}

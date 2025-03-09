@@ -1,8 +1,7 @@
 import { Button, Card, Fieldset, Flex, Input, Stack, Text } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Form } from "react-router-dom";
-import { BACKEND_URL } from "@/utils/vars";
-import { extractStrings } from "@/utils/utils";
+import { extractStrings, logIn } from "@/utils/utils";
 import { useState } from "react";
 
 export default function Login() {
@@ -15,21 +14,9 @@ export default function Login() {
 		const username = formData.get("username") as string;
 		const password = formData.get("password") as string;
 
-		// make login request
-		fetch(BACKEND_URL + "/api/auth/login", {
-			method: "POST",
-			// FIXME: remove vv in prod (cookies passed by default on same domain)
-			credentials: "include", 
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				username: username,
-				password: password,
-			}),
-		})
+		logIn(username, password)
 			.then(async (response) => {
-				const data = await response.json()
+				const data = await response.json();
 
 				if (response.ok) {
 					setMessage("Login successful!");
@@ -46,9 +33,9 @@ export default function Login() {
 			});
 
 		// set state to loading while waiting
-		setMessage("loading...")
+		setMessage("loading...");
 	}
-	
+
 	return (
 		<Flex
 			alignItems="center"
