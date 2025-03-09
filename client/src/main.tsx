@@ -13,6 +13,7 @@ import { store } from "./store/store.ts";
 import LoggedOutProtector from "./route_protectors/LoggedOutProtector.tsx";
 import LoggedInTemp from "./pages/LoggedInTemp.tsx";
 import AuthLoader from "./pages/AuthLoader.tsx";
+import LoggedInProtector from "./route_protectors/LoggedInProtector.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -40,8 +41,14 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "dashboard",
-		element: <LoggedInTemp />,
+		path: "",
+		element: <LoggedInProtector />,
+		children: [
+			{
+				path: "dashboard",
+				element: <LoggedInTemp />,
+			}
+		]
 	},
 	{
 		path: "*",
