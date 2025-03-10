@@ -15,10 +15,10 @@ export default function LoggedInLayout() {
 							<Button variant="plain">HackerHunt</Button>
 						</Box>
 
-						<SidebarButton label="Dashboard" icon={Gauge} />
-						<SidebarButton label="Explore" icon={Search} />
-						<SidebarButton label="Profile" icon={CircleUserRound} />
-						<SidebarButton label="Create Project" icon={Plus} />
+						<SidebarButton label="Dashboard" icon={Gauge} dest="/dashboard" />
+						<SidebarButton label="Explore" icon={Search} dest="/explore" />
+						<SidebarButton label="Profile" icon={CircleUserRound} dest="/profile" />
+						<SidebarButton label="Create Project" icon={Plus} dest="/newproject" />
 					</Stack>
 					<Stack>
 						{/* bottom half of sidebar */}

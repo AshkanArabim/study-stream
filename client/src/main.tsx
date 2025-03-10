@@ -11,10 +11,13 @@ import NotFound from "./pages/NotFound.tsx";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "./store/store.ts";
 import LoggedOutProtector from "./route_protectors/LoggedOutProtector.tsx";
-import LoggedInTemp from "./pages/LoggedInTemp.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 import AuthLoader from "./pages/AuthLoader.tsx";
 import LoggedInProtector from "./route_protectors/LoggedInProtector.tsx";
 import LoggedInLayout from "./pages/LoggedInLayout.tsx";
+import Explore from "./pages/Explore.tsx";
+import Profile from "./pages/Profile.tsx";
+import CreateProject from "./pages/CreateProject.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -51,7 +54,19 @@ const router = createBrowserRouter([
 				children: [
 					{
 						path: "dashboard",
-						element: <LoggedInTemp />,
+						element: <Dashboard />,
+					},
+					{
+						path: "explore",
+						element: <Explore />,
+					},
+					{
+						path: "profile",
+						element: <Profile />,
+					},
+					{
+						path: "newproject",
+						element: <CreateProject />,
 					},
 				],
 			},
