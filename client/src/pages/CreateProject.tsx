@@ -1,5 +1,5 @@
 import { Field } from "@/components/ui/field";
-import { Container, Fieldset, Heading, Input } from "@chakra-ui/react";
+import { Container, Fieldset, Heading, Input, Textarea } from "@chakra-ui/react";
 import { Form } from "react-router-dom";
 
 export default function CreateProject() {
@@ -16,9 +16,9 @@ export default function CreateProject() {
 					</Field>
 
 					<Field label="Description">
-						<Input
+						<Textarea
 							name="description"
-							type="text"
+							rows={4}
 							placeholder="HackerHunt is a website aiming to help CS students find technical sideprojects to collaborate on."
 						/>
 					</Field>
@@ -54,9 +54,9 @@ export default function CreateProject() {
 					</Container>
 
 					<Field label="Post-Acceptance Info">
-						<Input
+						<Textarea
 							name="cont-expectations"
-							type="text"
+							rows={4}
 							placeholder="e.g. Contact info & other details to share once a contributor is accepted."
 						/>
 					</Field>
