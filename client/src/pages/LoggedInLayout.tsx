@@ -7,7 +7,7 @@ export default function LoggedInLayout() {
 	return (
 		<Container h="dvh">
 			<HStack h="100%" w="100%">
-				<Stack w="250px" h="100%" borderRightWidth="1px" justifyContent="space-between">
+				<Stack w="250px" h="100%" borderRightWidth="1px" justifyContent="space-between" flex="0 0 auto">
 					{/* sidebar starts here */}
 					<Stack gap="0">
 						{/* top half of sidebar */}
