@@ -1,7 +1,7 @@
 import SidebarButton from "@/components/SidebarButton";
 import { Box, Button, Container, HStack, Stack, Text } from "@chakra-ui/react";
 import { CircleUserRound, Gauge, Plus, Search } from "lucide-react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 export default function LoggedInLayout() {
 	return (
@@ -11,9 +11,11 @@ export default function LoggedInLayout() {
 					{/* sidebar starts here */}
 					<Stack gap="0">
 						{/* top half of sidebar */}
-						<Box borderBottomWidth="1px">
-							<Button variant="plain">HackerHunt</Button>
-						</Box>
+						<Link to="/">
+                            <Box borderBottomWidth="1px">
+                                <Button variant="plain">HackerHunt</Button>
+                            </Box>
+                        </Link>
 
 						<SidebarButton label="Dashboard" icon={Gauge} dest="/dashboard" />
 						<SidebarButton label="Explore" icon={Search} dest="/explore" />
