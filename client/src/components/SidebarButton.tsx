@@ -11,7 +11,7 @@ interface SidebarButtonProps {
 export default function SidebarButton({ label, icon, dest }: SidebarButtonProps) {
 	return (
 		<Link to={dest}>
-            <Button variant="ghost" justifyContent="flex-start">
+            <Button variant="ghost" justifyContent="flex-start" w="100%">
                 <HStack>
                     <Box as={icon} />
                     <Text>{label}</Text>
