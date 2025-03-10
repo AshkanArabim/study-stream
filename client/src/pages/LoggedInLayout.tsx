@@ -20,7 +20,7 @@ export default function LoggedInLayout() {
 						<SidebarButton label="Dashboard" icon={Gauge} dest="/dashboard" />
 						<SidebarButton label="Explore" icon={Search} dest="/explore" />
 						<SidebarButton label="Profile" icon={CircleUserRound} dest="/profile" />
-						<SidebarButton label="Create Project" icon={Plus} dest="/newproject" />
+						<SidebarButton label="Create Project" icon={Plus} dest="/createproject" />
 					</Stack>
 					<Stack>
 						{/* bottom half of sidebar */}
